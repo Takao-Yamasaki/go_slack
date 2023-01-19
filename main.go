@@ -7,20 +7,32 @@ import (
 	"github.com/joho/godotenv"
 	"net/http"
 	"os"
+	"time"
 )
 
-func main() {
+func loadenv() {
 	// .envファイルの読み込み
 	err := godotenv.Load(".env")
 	if err != nil {
 		panic("could not read .env file")
 	}
+}
+
+func get_weekday() string {
+	weekday := []string{"日", "月", "火", "水", "木", "金", "土"}
+	day := time.Now().Weekday()
+	return weekday[day]
+}
+
+func main() {
+	loadenv()
 
 	// Webhook URL
 	url := os.Getenv("WEBHOOK_URL")
+
 	// Slackメッセージ
 	message := map[string]string{
-		"text": "Hello",
+		"text": get_weekday(),
 	}
 
 	// jsonエンコードする
